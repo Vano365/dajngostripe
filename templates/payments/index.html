@@ -1,0 +1,163 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Home</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+
+    <!-- All CSS is here
+	============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/bootstrap.min.css' %}">
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/dlicon.css' %}">
+    <!-- Others CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jarallax.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/easyzoom.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/fullpage.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src={% static "ajax/cart.js" %}></script>
+    <div class="main-wrapper">
+        <header class="header-area section-padding-1">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="logo logo-width">
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 d-flex justify-content-center position-static">
+                        <div class="main-menu menu-lh-1 main-menu-padding-1">
+                            <nav>
+                                <ul>
+                                    <li class="position-static"><a class="active" href="/">Home</a>
+                                        
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="header-right-wrap header-right-flex">
+                            <div class="same-style cart-wrap">
+                                <a href="/cart">
+                                    <i class="dlicon shopping_bag-20"></i>
+                                    <span class="count-style" id="cart_count">{{ cart_count }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="breadcrumb-area section-padding-1 bg-gray breadcrumb-ptb-1">
+            <div class="container-fluid">
+                <div class="breadcrumb-content text-center">
+                    <div class="breadcrumb-title">
+                        <h2>Stripe</h2>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="/">Home </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="shop-area section-padding-1 pt-100 pb-100">
+            <div class="container-fluid">
+                <div class="shop-top-bar">
+                    <div class="shop-top-bar-left">
+                        <div class="shop-top-show">
+                            <span>Показано {{ products_len }} из {{ products_len }} результатов</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content jump-3 pt-30">
+                    <div id="shop-1" class="tab-pane active">
+                        <div class="row">
+                            {% for p in products %}
+                            <div class="custom-col-5">
+                                <div class="product-wrap mb-50">
+                                    <div class="product-img default-overlay mb-25">
+                                        <a href="/item/{{ p.id }}">
+                                            <img class="default-img" src="{% static 'assets/images/product/product-3.jpg' %}" alt="">
+                                            <img class="hover-img" src="{% static 'assets/images/product/product-3-2.jpg' %}" alt="">
+                                        </a>
+                                        <div class="product-action product-action-position-1">
+                                            <a title="Add to Cart" onclick="add_to_cart_one('{{ p.id }}')"><i class="fa fa-shopping-cart"></i><span>В Корзину</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-content-2 title-font-width-400 text-center">
+                                        <h3><a href="/item/{{ p.id }}/">{{ p.name }}</a></h3>
+                                        <div class="product-price">
+                                            <span class="new-price">{{ p.cur_name }}{{ p.price }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All JS is here
+============================================ -->
+
+    <!-- Modernizer JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.7.min.js' %}"></script>
+    <!-- jquery -->
+    <script src="{% static 'assets/js/vendor/jquery-v3.6.0.min.js' %}"></script>
+    <!-- Popper JS -->
+    <script src="{% static 'assets/js/vendor/popper.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slick.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jarallax.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/countdown.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/magnific-popup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/instafeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/tilt.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/images-loaded.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrolloverflow-fullpage.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/fullpage.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-ui.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-ui-touch-punch.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/easyzoom.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/resizesensor.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/sticky-sidebar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/cookie.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bpopup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/wow.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

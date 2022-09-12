@@ -1,0 +1,230 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Cart</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- All CSS is here
+	============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/bootstrap.min.css' %}">
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/dlicon.css' %}">
+    <!-- Others CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jarallax.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/easyzoom.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/fullpage.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    
+    <script src="https://js.stripe.com/v3/"></script>  <!-- new -->
+    <script src="{% static 'usd.js' %}"></script>
+    <script src="{% static 'eur.js' %}"></script>
+    <script src="{% static 'rub.js' %}"></script>
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src={% static "ajax/cart.js" %}></script>
+    <div class="main-wrapper">
+        <header class="header-area section-padding-1">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="logo logo-width">
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 d-flex justify-content-center position-static">
+                        <div class="main-menu menu-lh-1 main-menu-padding-1">
+                            <nav>
+                                <ul>
+                                    <li class="position-static"><a class="" href="/">Home</a>
+                                        
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        <div class="header-right-wrap header-right-flex">
+                            <div class="same-style cart-wrap">
+                                <a href="#" class="cart-active">
+                                    <i class="dlicon shopping_bag-20"></i>
+                                    <span class="count-style" id="cart_count">{{ cart_count }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="breadcrumb-area section-padding-1 bg-gray breadcrumb-ptb-1">
+            <div class="container-fluid">
+                <div class="breadcrumb-content text-center">
+                    <div class="breadcrumb-title">
+                        <h2>Stripe</h2>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li><span> &gt; </span></li>
+                        <li class="active"> Cart </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- cart start -->
+        <div class="cart-main-area pt-90 pb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-content table-responsive cart-table-content">
+                                        <table id="table_product">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Название</th>
+                                                    <th> Цена</th>
+                                                    <th>Кол-во</th>
+                                                    <th>Всего</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for p in products %}
+                                                <tr id="tr_{{ p.id }}">
+                                                    <td class="product-remove">
+                                                        <a onclick="delete_product_to_cart({{ p.id }}, '{{ p.cur }}', {{ p.total }})"><i class="dlicon ui-1_simple-remove"></i></a>
+                                                    </td>
+                                                    <td class="product-img">
+                                                        <a href="/item/{{ p.id }}/"><img src="{% static 'assets/images/cart/cart-1.jpg' %}" alt=""></a>
+                                                    </td>
+                                                    <td class="product-name"><a href="/item/{{ p.id }}/">{{ p.name }}</a></td>
+                                                    <td class="product-price"><span class="amount">{{ p.cur_name }}{{ p.price }}</span></td>
+                                                    <td class="cart-quality">
+                                                        <div class="product-details-quality quality-width-cart">
+                                                            <div class="cart-plus-minus">
+                                                            <div onclick="add_to_cart_one_cart({{ p.id }}, {{ p.price }}, -1, '{{ p.cur }}')" class="dec qtybutton">-</div>
+                                                                <input class="cart-plus-minus-box" id="qty_input_{{ p.id }}" type="text" name="qtybutton" value="{{ p.qty }}">
+                                                            <div onclick="add_to_cart_one_cart({{ p.id }}, {{ p.price }}, 1, '{{ p.cur }}')" class="inc qtybutton">+</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-price">{{ p.cur_name }}<span id="cart_total_{{ p.id }}">{{ p.total }}</span></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="cart-shiping-update-wrapper">
+                                        <div class="cart-clear">
+                                            <a onclick="delete_to_cart()">Очистить корзину</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="grand-total-wrap">
+                                        <h4>Товары за доллары</h4>
+                                        <div class="grand-total-content">
+                                            <ul>
+                                                <li>Всего $<span id="total_usd">{{ total_usd }}</span> </li>
+                                            </ul>
+                                        </div>
+                                        <div class="grand-btn">
+                                            <input type="hidden" name="price" id="price_usd" value="{{ total_usd }}">
+                                            <a title="Buy" id="submitBtnUsd">Оплатить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="grand-total-wrap">
+                                        <h4>Товары за евро</h4>
+                                        <div class="grand-total-content">
+                                            <ul>
+                                                <li>Всего €<span id="total_eur">{{ total_eur }}</span> </li>
+                                            </ul>
+                                        </div>
+                                        <div class="grand-btn">
+                                            <input type="hidden" name="price" id="price_eur" value="{{ total_eur }}">
+                                            <a id="submitBtnEur">Оплатить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="grand-total-wrap">
+                                        <h4>Товары за рубли</h4>
+                                        <div class="grand-total-content">
+                                            <ul>
+                                                <li>Всего ₽<span id="total_rub">{{ total_rub }}</span> </li>
+                                            </ul>
+                                        </div>
+                                        <div class="grand-btn">
+                                            <input type="hidden" name="price" id="price_rub" value="{{ total_rub }}">
+                                            <a id="submitBtnRub">Оплатить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All JS is here
+============================================ -->
+
+    <!-- Modernizer JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.7.min.js' %}"></script>
+    <!-- jquery -->
+    <script src="{% static 'assets/js/vendor/jquery-v3.6.0.min.js' %}"></script>
+    <!-- Popper JS -->
+    <script src="{% static 'assets/js/vendor/popper.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slick.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jarallax.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/countdown.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/magnific-popup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/instafeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/tilt.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/images-loaded.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrolloverflow-fullpage.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/fullpage.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-ui.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery-ui-touch-punch.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/easyzoom.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/resizesensor.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/sticky-sidebar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/cookie.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bpopup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/wow.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
